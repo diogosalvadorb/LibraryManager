@@ -1,18 +1,26 @@
 ﻿using LibraryManager.Core.Entities;
 using LibraryManager.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManager.Infrastructure.Persistence.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        public Task AddAsync(User book)
+        private readonly DataBaseContext _context;
+        public UserRepository(DataBaseContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<User> GetByIdAsync(int id)
+        public async Task AddAsync(User user)
         {
-            throw new NotImplementedException();
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<User> GetByIdAsync(int id)
+        {
+            return await _context.Users.SingleOrDefaultAsync(x => x.Id == id && x.Active);
         }
     }
 }

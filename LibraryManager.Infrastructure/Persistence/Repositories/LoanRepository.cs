@@ -1,28 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LibraryManager.Core.Entities;
+﻿using LibraryManager.Core.Entities;
 using LibraryManager.Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManager.Infrastructure.Persistence.Repositories
 {
     public class LoanRepository : ILoanRepository
     {
-        public Task AddAsync(Loan loan)
+        private readonly DataBaseContext _context;
+        public LoanRepository(DataBaseContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+
+        public async Task AddAsync(Loan loan)
+        {
+            await _context.Loans.AddAsync(loan);
+            await _context.SaveChangesAsync();
         }
 
         public Task<Loan> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _context.Loans.SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
         }
     }
 }
