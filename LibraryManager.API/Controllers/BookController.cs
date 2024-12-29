@@ -1,4 +1,5 @@
 ﻿using LibraryManager.Application.Commands.BookCommands.CreateBook;
+using LibraryManager.Application.Commands.BookCommands.DeleteBook;
 using LibraryManager.Application.Queries.BookQueries.GetAllBook;
 using LibraryManager.Application.Queries.BookQueries.GetBookById;
 using MediatR;
@@ -41,6 +42,14 @@ namespace LibraryManager.API.Controllers
             var id = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(GetBookById), new { Id = id }, command);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            await _mediator.Send(new DeleteBookCommand(id));
+
+            return NoContent();
         }
     }
 }
