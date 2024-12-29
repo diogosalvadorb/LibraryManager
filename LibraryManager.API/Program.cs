@@ -1,10 +1,14 @@
+using LibraryManager.Application.Commands.UserCommands.CreateUser;
 using LibraryManager.Infrastructure;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DataBaseContext>(options => options
                         .UseSqlServer(builder.Configuration.GetConnectionString("LibraryManager")));
+
+builder.Services.AddMediatR(typeof(CreateUserCommand));
 
 
 builder.Services.AddControllers();
