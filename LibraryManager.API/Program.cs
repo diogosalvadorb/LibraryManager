@@ -1,5 +1,7 @@
 using LibraryManager.Application.Commands.UserCommands.CreateUser;
+using LibraryManager.Core.Repositories;
 using LibraryManager.Infrastructure;
+using LibraryManager.Infrastructure.Persistence.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +12,9 @@ builder.Services.AddDbContext<DataBaseContext>(options => options
 
 builder.Services.AddMediatR(typeof(CreateUserCommand));
 
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+builder.Services.AddScoped<ILoanRepository, LoanRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
