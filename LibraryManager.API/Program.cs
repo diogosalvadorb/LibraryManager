@@ -1,9 +1,13 @@
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using LibraryManager.API.Filters;
 using LibraryManager.Application.Commands.UserCommands.CreateUser;
 using LibraryManager.Core.Repositories;
 using LibraryManager.Infrastructure;
 using LibraryManager.Infrastructure.Persistence.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using LibraryManager.Application.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +20,12 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserCommandValidators>();
+
+builder.Services.AddControllers(options => options.Filters.Add(typeof(ValidationFilter)));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
