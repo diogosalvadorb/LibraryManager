@@ -16,9 +16,8 @@ namespace LibraryManager.Application.Commands.BookCommands.DeleteBook
             var book = await _repository.GetByIdAsync(request.Id);
 
             if (book == null)
-            {
-                throw new ArgumentNullException("");
-            }
+                throw new ArgumentNullException("book not found");
+
 
             book.Delete();
 

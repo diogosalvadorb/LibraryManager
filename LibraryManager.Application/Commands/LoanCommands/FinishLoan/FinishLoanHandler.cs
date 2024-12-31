@@ -16,14 +16,14 @@ namespace LibraryManager.Application.Commands.LoanCommands.FinishLoan
             var loancompleted = await _repository.GetByIdAsync(request.Id);
 
             if (loancompleted == null)
-                throw new ArgumentNullException("Nenhum empréstimo encontrado");
+                throw new ArgumentNullException("loan not found");
 
             loancompleted.ConfirmReturn();
 
             if (loancompleted.DueDate < DateTime.Now)
             {
                 var daysLate = (DateTime.Now.Date - loancompleted.DueDate.Date).Days;
-                Console.WriteLine($"Empréstimo devolvido com {daysLate} dias de atraso.");
+                Console.WriteLine($"Loan returned with {daysLate} days late.");
             }
 
             await _repository.SaveChangesAsync();
